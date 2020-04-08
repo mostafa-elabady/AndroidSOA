@@ -21,4 +21,4 @@ class App: Application() {
     }
 }
 
-inline fun featureRegistry(context: Context): IFeatureRegistry = (context.applicationContext as App).featureRegistry
+fun featureRegistry(context: Context): IFeatureRegistry = (context.applicationContext as App).featureRegistry

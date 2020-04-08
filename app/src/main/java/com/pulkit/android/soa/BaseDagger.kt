@@ -2,6 +2,7 @@ package com.pulkit.android.soa
 
 import android.app.Application
 import android.content.Context
+import com.pulkit.feature.registry.Broker
 import com.pulkit.feature.registry.Feature
 import com.pulkit.feature.registry.FeatureRegistry
 import com.pulkit.feature.registry.IFeatureRegistry
@@ -14,7 +15,9 @@ import dagger.Module
 import dagger.Provides
 import dagger.multibindings.IntoSet
 import java.lang.Exception
+import javax.inject.Singleton
 
+@Singleton
 @Component(modules = [BaseModule::class])
 interface BaseComponent {
 
@@ -38,6 +41,7 @@ object BaseModule {
 
     @Provides
     @IntoSet
+    @Singleton
     fun adFeature(adDependencies: IAdViewFeature.Dependencies): Feature {
         val provider =
             Class.forName(AD_IMPL_PROVIDER_CLASS).kotlin.objectInstance as IAdViewFeature.Provider
@@ -46,14 +50,16 @@ object BaseModule {
 
     @Provides
     @IntoSet
-    fun homeFeature(): Feature {
+    @Singleton
+    fun homeFeature(broker: Broker): Feature {
         val provider =
             Class.forName(HOME_IMPL_PROVIDER_CLASS).kotlin.objectInstance as IHomeFeature.Provider
-        return provider.get()
+        return provider.get(broker)
     }
 
     @Provides
     @IntoSet
+    @Singleton
     fun followTopicFeature(dependencies: IFollowTopicFeature.Dependencies): Feature {
         val provider =
             Class.forName(FOLLOW_TOPIC_IMPL_PROVIDER_CLASS).kotlin.objectInstance as IFollowTopicFeature.Provider
@@ -61,15 +67,18 @@ object BaseModule {
     }
 
     @Provides
-    fun featureRegistry(initFeatures: Set<@JvmSuppressWildcards Feature>): IFeatureRegistry {
-        return FeatureRegistry(initFeatures)
+    @Singleton
+    fun featureRegistry(initFeatures: Set<@JvmSuppressWildcards Feature>, broker: Broker): IFeatureRegistry {
+        return FeatureRegistry(initFeatures, broker)
     }
 
     @Provides
     @JvmStatic
+    @Singleton
     fun string(): String = "aDependencyString"
 
     @Provides
     @JvmStatic
+    @Singleton
     fun appContextProvider(application: Application): Context = application
 }

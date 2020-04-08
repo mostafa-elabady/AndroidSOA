@@ -3,6 +3,8 @@ package com.pulkit.android.soa
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.pulkit.feature.registry.features.IHomeFeature
+import com.pulkit.feature.registry.getOfType
+
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -12,10 +14,8 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
 
-        fab.setOnClickListener { view ->
-            // featureRegistry(this).getOfType(IHomeFeature::class.java).firstOrNull()?.let { it ->
-            //     (it as IHomeFeature).show(this)
-            // }
+        fab.setOnClickListener {
+            featureRegistry(this).getOfType<IHomeFeature>().firstOrNull()?.show(this)
         }
     }
 }

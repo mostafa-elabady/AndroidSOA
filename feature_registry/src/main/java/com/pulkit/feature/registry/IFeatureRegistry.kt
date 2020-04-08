@@ -7,6 +7,4 @@ interface IFeatureRegistry {
     fun unregister(feature: Feature)
 
     fun getAll(): Collection<Feature>
-
-    fun getOfType(type: Class<out Feature>): List<Feature>
 }

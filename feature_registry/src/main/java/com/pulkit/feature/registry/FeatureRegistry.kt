@@ -1,11 +1,12 @@
 package com.pulkit.feature.registry
 
-class FeatureRegistry constructor(initFeatures: Set<Feature>) : IFeatureRegistry {
+class FeatureRegistry constructor(initFeatures: Set<Feature>, broker: Broker) : IFeatureRegistry {
 
     private val features = mutableSetOf<Feature>()
 
     init {
         this.features.addAll(initFeatures.filterNotNull())
+        broker.notifyRegistryLoaded(this)
     }
 
     override fun register(feature: Feature) {
@@ -19,6 +20,8 @@ class FeatureRegistry constructor(initFeatures: Set<Feature>) : IFeatureRegistry
     override fun getAll(): Collection<Feature> =
         features.toSet()
 
-    override fun getOfType(type: Class<out Feature>): List<Feature> =
-        features.filter { it.javaClass == type }
+}
+
+inline fun <reified T : Feature> IFeatureRegistry.getOfType(): List<T> {
+    return getAll().filterIsInstance<T>()
 }

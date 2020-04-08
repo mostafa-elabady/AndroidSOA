@@ -1,0 +1,6 @@
+rootProject.name='My Application'
+include ':app'
+include ':feature_registry'
+include ':follow_topic'
+include ':ads'
+include ':home'

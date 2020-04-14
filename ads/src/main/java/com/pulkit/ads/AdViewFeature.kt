@@ -10,7 +10,6 @@ constructor(context: Context, aDependency: String) : IAdViewFeature {
 
     }
 
-
     companion object Provider : IAdViewFeature.Provider {
         override fun get(dependencies: IAdViewFeature.Dependencies): IAdViewFeature {
             return AdViewFeature(dependencies.context, dependencies.string)
